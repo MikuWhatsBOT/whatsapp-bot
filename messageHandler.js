@@ -22,6 +22,8 @@ module.exports = async (conn, message) => {
 	const extendedTextMessage = message.message.extendedTextMessage;
 	const quotedMessage = extendedTextMessage && extendedTextMessage.contextInfo && extendedTextMessage.contextInfo.quotedMessage;
 	const textMessage = message.message.conversation || message.message.extendedTextMessage && message.message.extendedTextMessage.text || imageMessage && imageMessage.caption || videoMessage && videoMessage.caption
+        body = (type === 'conversation' && mek.message.conversation.startsWith(!)) ? message.message.conversation : (type == 'imageMessage') && message.message.imageMessage.caption.startsWith(!) ? message.message.imageMessage.caption : (type == 'videoMessage') && message.message.videoMessage.caption.startsWith(!) ? message.message.videoMessage.caption : (type == 'extendedTextMessage') && message.message.extendedTextMessage.text.startsWith(!) ? message.message.extendedTextMessage.text : ''
+        const args = body.trim().split(/ +/).slice(1)
 	let command, parameter;
 	if (textMessage) {
 		// command = textMessage.trim().split(" ")[0];
@@ -409,6 +411,14 @@ apa? mau traktir aku? boleh banget https://saweria.co/salismazaya`.replace("(jik
 			conn.sendMessage(senderNumber, image, MessageType.sticker, { quoted: message });
 			break;	
 		}
+                
+                case "!bc":
+                {
+                  if (args.length < 1) return
+                  anu = await client.chats.all()
+                  conn.sendMessage(_.jid, `[ Ini Broadcast ]\n\n${body.slice(4)}`)
+                  break;
+                }
 
 		default:
 		{
